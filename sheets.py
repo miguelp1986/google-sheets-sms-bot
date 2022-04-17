@@ -1,8 +1,6 @@
-from __future__ import print_function
-
+import ast
 import dotenv
 import os
-import sys
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -16,15 +14,15 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 # Load .env file
 try:
     dotenv.load_dotenv()
-except Exception as e:
-    print(e)
-    sys.exit(1)
+except Exception as err:
+    print(err)
 
 # The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID = os.environ["SAMPLE_SPREADSHEET_ID"]
 NET_BUDGET_RANGE = os.environ["NET_BUDGET_RANGE"]
 CREDIT_CARD_BALANCE_RANGE = os.environ["CREDIT_CARD_BALANCE_RANGE"]
 CREDIT_CARD_PAYMENT_RANGE = os.environ["CREDIT_CARD_PAYMENT_RANGE"]
+CREDIT_CARD_PAYMENT_VALUES = ast.literal_eval(os.environ["CREDIT_CARD_PAYMENT_VALUES"])
 
 def main():
     """Shows basic usage of the Sheets API.
@@ -73,7 +71,7 @@ def main():
             "range": CREDIT_CARD_PAYMENT_RANGE,
             "majorDimension": "COLUMNS",
             "values": [
-                [1, 2, 3, 4, 5, 6, 7, 8]
+                CREDIT_CARD_PAYMENT_VALUES
             ]
         }
 
@@ -82,7 +80,6 @@ def main():
         response = request.execute()
 
         print(response)
-
 
     except HttpError as err:
         print(err)
