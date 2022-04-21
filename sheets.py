@@ -77,7 +77,7 @@ def main():
             for cell in row:
                 message = "Budget left for month: ${:.2f}".format(cell)
                 phone_number = PERSONAL_PHONE_NUMBER
-                twilio_conversation(message=message, phone_number=phone_number)
+                twilio_conversation(sms_message=message, phone_number=phone_number)
 
         # # Write example
         # value_input_option = "USER_ENTERED"
@@ -99,7 +99,7 @@ def main():
         print(err)
 
 
-def twilio_conversation(message:str, phone_number:str) -> str:
+def twilio_conversation(sms_message:str, phone_number:str) -> str:
     """."""
     account_sid = os.environ['TWILIO_ACCOUNT_SID']
     auth_token = os.environ['TWILIO_AUTH_TOKEN']
@@ -107,7 +107,7 @@ def twilio_conversation(message:str, phone_number:str) -> str:
 
     message = client.messages \
                     .create(
-                        body=message,
+                        body=sms_message,
                         from_=TWILIO_PHONE_NUMBER,
                         to=phone_number
                     )
