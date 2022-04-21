@@ -65,7 +65,7 @@ def main():
                 phone_number = os.environ["PERSONAL_PHONE_NUMBER"]
                 twilio_conversation(sms_message=message, phone_number=phone_number)
 
-        # # Write example
+        # Write example
         value_input_option = "USER_ENTERED"
         value_range_body = {
             "range": os.environ["CREDIT_CARD_PAYMENT_RANGE"],
