@@ -1,1 +1,1 @@
-# google-workspace-app
+# google-sheets-sms-bot
