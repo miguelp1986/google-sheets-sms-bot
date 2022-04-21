@@ -1,6 +1,4 @@
 import ast
-from email import message
-from venv import create
 import dotenv
 import os
 
@@ -12,8 +10,6 @@ from googleapiclient.errors import HttpError
 
 from twilio.rest import Client
 
-# If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # Load .env file
 try:
@@ -21,20 +17,10 @@ try:
 except Exception as err:
     print(err)
 
-# The ID and range of a sample spreadsheet.
-SAMPLE_SPREADSHEET_ID = os.environ["SAMPLE_SPREADSHEET_ID"]
-NET_BUDGET_RANGE = os.environ["NET_BUDGET_RANGE"]
-CREDIT_CARD_BALANCE_RANGE = os.environ["CREDIT_CARD_BALANCE_RANGE"]
-CREDIT_CARD_PAYMENT_RANGE = os.environ["CREDIT_CARD_PAYMENT_RANGE"]
-CREDIT_CARD_PAYMENT_VALUES = ast.literal_eval(os.environ["CREDIT_CARD_PAYMENT_VALUES"])
-TWILIO_ACCOUNT_SID = os.environ["TWILIO_ACCOUNT_SID"]
-TWILIO_AUTH_TOKEN = os.environ["TWILIO_AUTH_TOKEN"]
-TWILIO_PHONE_NUMBER = os.environ["TWILIO_PHONE_NUMBER"]
-PERSONAL_PHONE_NUMBER = os.environ["PERSONAL_PHONE_NUMBER"]
-FATHIA_PHONE_NUMBER = os.environ["FATHIA_PHONE_NUMBER"]
+# If modifying these scopes, delete the file token.json.
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
-TWILIO_SERVICE_SID = os.environ["TWILIO_SERVICE_SID"]
-TWILIO_CONVERSATION_SID = os.environ["TWILIO_CONVERSATION_SID"]
+CREDIT_CARD_PAYMENT_VALUES = ast.literal_eval(os.environ["CREDIT_CARD_PAYMENT_VALUES"])
 
 def main():
     """Shows basic usage of the Sheets API.
@@ -64,8 +50,8 @@ def main():
         # Read example
         sheet = service.spreadsheets()
         value_render_option = "UNFORMATTED_VALUE"
-        result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, \
-                                    range=NET_BUDGET_RANGE, \
+        result = sheet.values().get(spreadsheetId=os.environ["SAMPLE_SPREADSHEET_ID"], \
+                                    range=os.environ["NET_BUDGET_RANGE"], \
                                     valueRenderOption=value_render_option).execute()
         values = result.get('values', [])
 
@@ -76,24 +62,24 @@ def main():
         for row in values:
             for cell in row:
                 message = "Budget left for month: ${:.2f}".format(cell)
-                phone_number = PERSONAL_PHONE_NUMBER
+                phone_number = os.environ["PERSONAL_PHONE_NUMBER"]
                 twilio_conversation(sms_message=message, phone_number=phone_number)
 
         # # Write example
-        # value_input_option = "USER_ENTERED"
-        # value_range_body = {
-        #     "range": CREDIT_CARD_PAYMENT_RANGE,
-        #     "majorDimension": "COLUMNS",
-        #     "values": [
-        #         CREDIT_CARD_PAYMENT_VALUES
-        #     ]
-        # }
+        value_input_option = "USER_ENTERED"
+        value_range_body = {
+            "range": os.environ["CREDIT_CARD_PAYMENT_RANGE"],
+            "majorDimension": "COLUMNS",
+            "values": [
+                CREDIT_CARD_PAYMENT_VALUES
+            ]
+        }
 
-        # request = service.spreadsheets().values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, \
-        #     range=CREDIT_CARD_PAYMENT_RANGE, valueInputOption=value_input_option, body=value_range_body)
-        # response = request.execute()
+        request = service.spreadsheets().values().update(spreadsheetId=os.environ["SAMPLE_SPREADSHEET_ID"], \
+            range=os.environ["CREDIT_CARD_PAYMENT_RANGE"], valueInputOption=value_input_option, body=value_range_body)
+        response = request.execute()
 
-        # print(response)
+        print(response)
 
     except HttpError as err:
         print(err)
@@ -108,7 +94,7 @@ def twilio_conversation(sms_message:str, phone_number:str) -> str:
     message = client.messages \
                     .create(
                         body=sms_message,
-                        from_=TWILIO_PHONE_NUMBER,
+                        from_=os.environ["TWILIO_PHONE_NUMBER"],
                         to=phone_number
                     )
 
