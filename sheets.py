@@ -22,7 +22,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 CREDIT_CARD_PAYMENT_VALUES = ast.literal_eval(os.environ["CREDIT_CARD_PAYMENT_VALUES"])
 
-def main():
+def main() -> None:
     """Shows basic usage of the Sheets API.
     Prints values from a sample spreadsheet.
     """
@@ -50,9 +50,11 @@ def main():
         # Read example
         sheet = service.spreadsheets()
         value_render_option = "UNFORMATTED_VALUE"
-        result = sheet.values().get(spreadsheetId=os.environ["SAMPLE_SPREADSHEET_ID"], \
-                                    range=os.environ["NET_BUDGET_RANGE"], \
-                                    valueRenderOption=value_render_option).execute()
+        result = sheet.values().get(
+            spreadsheetId=os.environ["SAMPLE_SPREADSHEET_ID"], \
+            range=os.environ["NET_BUDGET_RANGE"], \
+            valueRenderOption=value_render_option \
+            ).execute()
         values = result.get('values', [])
 
         if not values:
@@ -63,41 +65,25 @@ def main():
             for cell in row:
                 message = "Budget left for month: ${:.2f}".format(cell)
                 phone_number = os.environ["PERSONAL_PHONE_NUMBER"]
-                twilio_conversation(sms_message=message, phone_number=phone_number)
 
         # Write example
         value_input_option = "USER_ENTERED"
         value_range_body = {
-            "range": os.environ["CREDIT_CARD_PAYMENT_RANGE"],
+            "range": os.environ["TEST_RANGE"],
             "majorDimension": "COLUMNS",
             "values": [
-                CREDIT_CARD_PAYMENT_VALUES
+                os.environ["TEST_VALUES"] TODO fix invalid data value error
             ]
         }
 
-        request = service.spreadsheets().values().update(spreadsheetId=os.environ["SAMPLE_SPREADSHEET_ID"], \
-            range=os.environ["CREDIT_CARD_PAYMENT_RANGE"], valueInputOption=value_input_option, body=value_range_body)
+        request = service.spreadsheets().values().update(
+            spreadsheetId=os.environ["SAMPLE_SPREADSHEET_ID"], \
+            range=os.environ["TEST_RANGE"], \
+            valueInputOption=value_input_option, \
+            body=value_range_body)
         response = request.execute()
-
-        print(response)
 
     except HttpError as err:
         print(err)
 
 
-def twilio_conversation(sms_message:str, phone_number:str) -> str:
-    """."""
-    account_sid = os.environ['TWILIO_ACCOUNT_SID']
-    auth_token = os.environ['TWILIO_AUTH_TOKEN']
-    client = Client(account_sid, auth_token)
-
-    message = client.messages \
-                    .create(
-                        body=sms_message,
-                        from_=os.environ["TWILIO_PHONE_NUMBER"],
-                        to=phone_number
-                    )
-
-
-if __name__ == '__main__':
-    main()
