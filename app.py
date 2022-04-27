@@ -2,7 +2,7 @@ import dotenv
 import os
 import sheets_handler
 
-from flask import Flask, request, redirect
+from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
 
 app = Flask(__name__)
@@ -28,7 +28,8 @@ def sms_reply():
 
     # Determine the right reply for this message
     if from_number == os.environ["PERSONAL_PHONE_NUMBER1"] or from_number == os.environ["PERSONAL_PHONE_NUMBER2"]:
-        resp.message("Only you two should receive this message")
+        message = sheets_handler.GoogleSheetsApiHandler().get_sheet_data()
+        resp.message(message)
 
     return str(resp)
 

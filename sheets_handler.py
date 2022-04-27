@@ -8,8 +8,6 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-from twilio.rest import Client
-
 
 # Load .env file
 try:
@@ -58,7 +56,7 @@ class GoogleSheetsApiHandler:
         return creds
 
 
-    def get_sheet_data(self) -> None:
+    def get_sheet_data(self) -> str:
         """."""
         # Read example
         value_render_option = "UNFORMATTED_VALUE"
@@ -75,8 +73,8 @@ class GoogleSheetsApiHandler:
 
         for row in values:
             for cell in row:
-                message = "Budget left for month: ${:.2f}".format(cell)
-                phone_number = os.environ["PERSONAL_PHONE_NUMBER"]
+                message = f"Budget left for month: ${cell:,.2f}"
+                return message
 
     
     def set_sheet_data(self) -> None:
