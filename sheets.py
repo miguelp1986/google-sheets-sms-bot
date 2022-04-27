@@ -87,3 +87,9 @@ def main() -> None:
         print(err)
 
 
+class GoogleSheetsHandler:
+    """."""
+    def __init__(self) -> None:
+        """."""
+        pass
+

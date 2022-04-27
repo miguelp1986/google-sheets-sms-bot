@@ -2,7 +2,6 @@ import dotenv
 import os
 
 from flask import Flask, request, redirect
-from sheets import main as sheets
 from twilio.twiml.messaging_response import MessagingResponse
 
 app = Flask(__name__)
