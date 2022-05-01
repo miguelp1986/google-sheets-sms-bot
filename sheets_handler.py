@@ -1,5 +1,5 @@
-import ast
 import dotenv
+import json
 import os
 
 from google.auth.transport.requests import Request
@@ -17,7 +17,6 @@ except Exception as err:
 
 # If modifying scope, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-CREDIT_CARD_PAYMENT_VALUES = ast.literal_eval(os.environ["CREDIT_CARD_PAYMENT_VALUES"])
 
 
 class GoogleSheetsApiHandler:
@@ -55,44 +54,51 @@ class GoogleSheetsApiHandler:
         
         return creds
 
+    
+    def _load_sheets_config(self, sheets_config_file:str) -> dict:
+        """Return dict from Google Sheets Configuration json file"""
+        if os.path.isfile(sheets_config_file):
+            with open(sheets_config_file, "r") as sheets_config:
+                return json.load(sheets_config)
 
-    def get_sheet_data(self) -> str:
+        return None
+
+    def _get_sheet_range(self, sheets_config_data:dict, request_message:str) -> dict:
+        """Get dict with the Gooogle Sheet range for the corresponding request message"""
+        if "spreadsheets" in sheets_config_data:
+            for spreadsheet in sheets_config_data["spreadsheets"]:
+                if "spreadsheet_id" in spreadsheet and "sheet_ranges" in spreadsheet \
+                    and spreadsheet["spreadsheet_id"] == os.environ["SPREADSHEET_ID"]:
+                    for sheet_range in spreadsheet["sheet_ranges"]:
+                        if sheet_range["request_message"] == request_message:
+                            return sheet_range
+
+        return {}
+
+
+    def get_sheet_data(self, request_message:str) -> str:
         """."""
         # Read example
-        value_render_option = "UNFORMATTED_VALUE"
-        result = self.sheet.values().get(
-            spreadsheetId=os.environ["SAMPLE_SPREADSHEET_ID"], \
-            range=os.environ["NET_BUDGET_RANGE"], \
-            valueRenderOption=value_render_option \
-            ).execute()
-        values = result.get('values', [])
+        sheets_config_data = self._load_sheets_config("sheets_configuration.json")
+        if bool(sheets_config_data):
+            sheet_range_dict = self._get_sheet_range(sheets_config_data, request_message)
+            if bool(sheet_range_dict) and "request_message" in sheet_range_dict and \
+                sheet_range_dict["request_message"] == request_message:
+                result = self.sheet.values().get(
+                    spreadsheetId=os.environ["SPREADSHEET_ID"], \
+                    range=sheet_range_dict["range"], \
+                    valueRenderOption="UNFORMATTED_VALUE" \
+                    ).execute()
+                values = result.get('values', [])
 
-        if not values:
-            print('No data found.')
-            return
-
-        for row in values:
-            for cell in row:
-                message = f"Budget left for month: ${cell:,.2f}"
-                return message
-
-    
-    def set_sheet_data(self) -> None:
-        """."""
-        # Write example
-        value_input_option = "USER_ENTERED"
-        value_range_body = {
-            "range": os.environ["TEST_RANGE"],
-            "majorDimension": "COLUMNS",
-            "values": [
-                os.environ["TEST_VALUES"] # TODO fix invalid data value error
-            ]
-        }
-
-        request = self.service.spreadsheets().values().update(
-            spreadsheetId=os.environ["SAMPLE_SPREADSHEET_ID"], \
-            range=os.environ["TEST_RANGE"], \
-            valueInputOption=value_input_option, \
-            body=value_range_body)
-
-        response = request.execute()
+                if not values:
+                    print('No data found.')
+                    return ""
+                
+                response_message = sheet_range_dict["response_message"]
+                for row in values:
+                    for cell in row:
+                        message = f"{response_message}: ${cell:,.2f}"
+                        return message
+        
+        return ""

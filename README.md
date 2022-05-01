@@ -1,1 +1,1 @@
-# google-sheets-sms-bot
+# Google Sheets SMS Bot
