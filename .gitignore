@@ -220,3 +220,4 @@ pip-selfcheck.json
 # Google Workspace API
 credentials.json
 token.json
+sheets_configuration.json
