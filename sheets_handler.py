@@ -61,7 +61,8 @@ class GoogleSheetsApiHandler:
             with open(sheets_config_file, "r") as sheets_config:
                 return json.load(sheets_config)
 
-        return None
+        return {}
+
 
     def _get_sheet_range(self, sheets_config_data:dict, request_message:str) -> dict:
         """Get dict with the Gooogle Sheet range for the corresponding request message"""
@@ -84,6 +85,7 @@ class GoogleSheetsApiHandler:
             sheet_range_dict = self._get_sheet_range(sheets_config_data, request_message)
             if bool(sheet_range_dict) and "request_message" in sheet_range_dict and \
                 sheet_range_dict["request_message"] == request_message:
+                response_message = sheet_range_dict["response_message"]
                 result = self.sheet.values().get(
                     spreadsheetId=os.environ["SPREADSHEET_ID"], \
                     range=sheet_range_dict["range"], \
@@ -95,7 +97,6 @@ class GoogleSheetsApiHandler:
                     print('No data found.')
                     return ""
                 
-                response_message = sheet_range_dict["response_message"]
                 for row in values:
                     for cell in row:
                         message = f"{response_message}: ${cell:,.2f}"
