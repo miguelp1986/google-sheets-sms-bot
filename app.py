@@ -18,7 +18,7 @@ except Exception as err:
 def sms_reply():
     """Send a dynamic reply to an incoming text message"""
     # Get the message the user sent our Twilio number
-    request_message = request.values.get("Body")
+    request_message = request.values.get("Body").lower()
     from_number = request.values.get("From")
     print(f"Incoming message: {request_message}")
     print(f"From phone number: {from_number}")
