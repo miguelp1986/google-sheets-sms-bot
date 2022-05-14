@@ -14,6 +14,11 @@ except Exception as err:
     print(err)
 
 
+@app.route("/")
+def hello_world():
+    return "<p>Hello, World!</p>"
+
+
 @app.route("/sms", methods=['GET', 'POST'])
 def sms_reply():
     """Send a dynamic reply to an incoming text message"""
@@ -26,8 +31,10 @@ def sms_reply():
     # Start our TwiML response
     resp = MessagingResponse()
 
-    # Determine the right reply for this message
-    if from_number == os.environ["PERSONAL_PHONE_NUMBER1"] or from_number == os.environ["PERSONAL_PHONE_NUMBER2"]:
+    phone_numbers = os.environ["PHONE_NUMBERS"].split(",") # build list of phone numbers
+
+    # If sender is recognized, give appropriate reply
+    if from_number in phone_numbers:
         message = sheets_handler.GoogleSheetsApiHandler().get_sheet_data(request_message)
         resp.message(message)
 
