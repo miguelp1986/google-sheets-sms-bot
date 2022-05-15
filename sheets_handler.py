@@ -30,6 +30,7 @@ class GoogleSheetsApiHandler:
     
         except HttpError as err:
             print(err)
+            raise
 
 
     def _get_creds(self):
@@ -79,7 +80,6 @@ class GoogleSheetsApiHandler:
 
     def get_sheet_data(self, request_message:str) -> str:
         """."""
-        # Read example
         sheets_config_data = self._load_sheets_config("sheets_configuration.json")
         if bool(sheets_config_data):
             sheet_range_dict = self._get_sheet_range(sheets_config_data, request_message)
@@ -97,6 +97,7 @@ class GoogleSheetsApiHandler:
                     print('No data found.')
                     return ""
                 
+                # only set up to return data from one cell
                 for row in values:
                     for cell in row:
                         message = f"{response_message}: ${cell:,.2f}"
