@@ -23,23 +23,23 @@ def hello_world():
 def sms_reply():
     """Send a dynamic reply to an incoming text message"""
     # Get the message the user sent our Twilio number
-    if request.values.get("Body") is not None:
-        request_message = request.values.get("Body").lower()
-        from_number = request.values.get("From")
-        print(f"Incoming message: {request_message}")
-        print(f"From phone number: {from_number}")
+    # if request.values.get("Body") is not None:
+    #     request_message = request.values.get("Body").lower()
+    #     from_number = request.values.get("From")
+    #     print(f"Incoming message: {request_message}")
+    #     print(f"From phone number: {from_number}")
 
-        # Start our TwiML response
-        resp = MessagingResponse()
+    #     # Start our TwiML response
+    #     resp = MessagingResponse()
 
-        phone_numbers = os.environ["PHONE_NUMBERS"].split(",") # build list of phone numbers
+    #     phone_numbers = os.environ["PHONE_NUMBERS"].split(",") # build list of phone numbers
 
-        # If sender is recognized, give appropriate reply
-        if from_number in phone_numbers:
-            message = sheets_handler.GoogleSheetsApiHandler().get_sheet_data(request_message)
-            resp.message(message)
+    #     # If sender is recognized, give appropriate reply
+    #     if from_number in phone_numbers:
+    #         message = sheets_handler.GoogleSheetsApiHandler().get_sheet_data(request_message)
+    #         resp.message(message)
 
-        return str(resp)
+    #     return str(resp)
     
     return "<p>No data, chief.</p>"
 
