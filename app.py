@@ -36,7 +36,7 @@ def sms_reply():
 
         # If sender is recognized, give appropriate reply
         if from_number in phone_numbers:
-            message = "No data, chielf."
+            message = "No data, chief."
             # message = sheets_handler.GoogleSheetsApiHandler().get_sheet_data(request_message)
             resp.message(message)
 
