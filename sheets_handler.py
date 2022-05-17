@@ -12,8 +12,8 @@ try:
     dotenv.load_dotenv()
 except Exception as err:
     print(err)
+    raise
 
-# If modifying scope, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 
