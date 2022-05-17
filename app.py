@@ -29,14 +29,14 @@ def sms_reply():
         print(f"Incoming message: {request_message}")
         print(f"From phone number: {from_number}")
 
-        # Start our TwiML response
-        resp = MessagingResponse()
 
         phone_numbers = os.environ["PHONE_NUMBERS"].split(",") # build list of phone numbers
 
         # If sender is recognized, give appropriate reply
         if from_number in phone_numbers:
             message = GoogleSheetsApiHandler().get_sheet_data(request_message)
+            # Start our TwiML response
+            resp = MessagingResponse()
             resp.message(message)
             return str(resp)
         
