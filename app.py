@@ -14,11 +14,6 @@ except Exception as err:
     print(err)
 
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
-
-
 @app.route("/sms", methods=['GET', 'POST'])
 def sms_reply():
     """Send a dynamic reply to an incoming text message"""
