@@ -80,8 +80,8 @@ class GoogleSheetsApiHandler:
                         return message
             
             else:
-                message = "Invalid message." # TODO: add help message here
                 print("Invalid message")
+                return "Invalid message." # TODO: add help message here
         
         else:
             print("sheets_configuration.json file not loaded properly.")
