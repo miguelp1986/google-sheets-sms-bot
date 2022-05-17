@@ -1,8 +1,8 @@
 import dotenv
 import os
-import sheets_handler
 
 from flask import Flask, request
+from sheets_handler import GoogleSheetsApiHandler
 from twilio.twiml.messaging_response import MessagingResponse
 
 app = Flask(__name__)
@@ -36,13 +36,15 @@ def sms_reply():
 
         # If sender is recognized, give appropriate reply
         if from_number in phone_numbers:
-            message = sheets_handler.GoogleSheetsApiHandler().get_sheet_data(request_message)
+            message = GoogleSheetsApiHandler().get_sheet_data(request_message)
+            resp.message(message)
+            return str(resp)
         
-        resp.message(message)
-        return str(resp)
-    
-    return "<p>No data, chief.</p>"
+        return
+        
+    else:
+        return "<p>No data, chief.</p>"
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    app.run(debug=True)
