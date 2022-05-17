@@ -221,3 +221,4 @@ pip-selfcheck.json
 credentials.json
 token.json
 sheets_configuration.json
+service_account.json
