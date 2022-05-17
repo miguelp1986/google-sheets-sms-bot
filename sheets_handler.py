@@ -60,8 +60,7 @@ class GoogleSheetsApiHandler:
         sheets_config_data = self._load_sheets_config("sheets_configuration.json")
         if bool(sheets_config_data):
             sheet_range_dict = self._get_sheet_range(sheets_config_data, request_message)
-            if bool(sheet_range_dict) and "request_message" in sheet_range_dict and \
-                sheet_range_dict["request_message"] == request_message:
+            if bool(sheet_range_dict):
                 response_message = sheet_range_dict["response_message"]
                 result = self.sheet.values().get(
                     spreadsheetId=os.environ["SPREADSHEET_ID"], \
@@ -79,5 +78,10 @@ class GoogleSheetsApiHandler:
                     for cell in row:
                         message = f"{response_message}: ${cell:,.2f}"
                         return message
+            
+            else:
+                message = "Invalid message." # TODO: add help message here
+                print("Invalid message")
         
-        return ""
+        else:
+            print("sheets_configuration.json file not loaded properly.")

@@ -37,8 +37,6 @@ def sms_reply():
         # If sender is recognized, give appropriate reply
         if from_number in phone_numbers:
             message = sheets_handler.GoogleSheetsApiHandler().get_sheet_data(request_message)
-        else:
-            message = "Invalid message request." # TODO: add help message here
         
         resp.message(message)
         return str(resp)
