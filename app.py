@@ -29,7 +29,7 @@ def sms_reply():
 
         # If sender is recognized, give appropriate reply
         if from_number in phone_numbers:
-            message = GoogleSheetsApiHandler().get_sheet_data(request_message)
+            message = GoogleSheetsApiHandler().get_message(request_message)
             # Start our TwiML response
             resp = MessagingResponse()
             resp.message(message)

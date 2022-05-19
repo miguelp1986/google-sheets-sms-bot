@@ -39,31 +39,30 @@ class GoogleSheetsApiHandler:
             with open(sheets_config_file, "r") as sheets_config:
                 return json.load(sheets_config)
 
-        return {}
+        return {} # TODO: raise error instead
 
 
-    def _get_sheet_range(self, sheets_config_data:dict, request_message:str) -> dict:
+    def _get_sheet_data(self, sheets_config_data:dict, request_message:str) -> tuple:
         """Get dict with the Gooogle Sheet range for the corresponding request message"""
         if "spreadsheets" in sheets_config_data:
             for spreadsheet in sheets_config_data["spreadsheets"]:
-                if "spreadsheet_id" in spreadsheet and "sheet_ranges" in spreadsheet \
-                    and spreadsheet["spreadsheet_id"] == os.environ["SPREADSHEET_ID"]:
+                if "spreadsheet_id" in spreadsheet and "sheet_ranges" in spreadsheet:
                     for sheet_range in spreadsheet["sheet_ranges"]:
                         if sheet_range["request_message"] == request_message:
-                            return sheet_range
+                            return spreadsheet["spreadsheet_id"], sheet_range
 
-        return {}
+        return (None, None) # TODO: raise error instead
 
 
-    def get_sheet_data(self, request_message:str) -> str:
+    def get_message(self, request_message:str) -> str:
         """."""
         sheets_config_data = self._load_sheets_config("sheets_configuration.json")
         if bool(sheets_config_data):
-            sheet_range_dict = self._get_sheet_range(sheets_config_data, request_message)
+            spreadsheet_id, sheet_range_dict = self._get_sheet_data(sheets_config_data, request_message)
             if bool(sheet_range_dict):
                 response_message = sheet_range_dict["response_message"]
                 result = self.sheet.values().get(
-                    spreadsheetId=os.environ["SPREADSHEET_ID"], \
+                    spreadsheetId=spreadsheet_id, \
                     range=sheet_range_dict["range"], \
                     valueRenderOption="UNFORMATTED_VALUE" \
                     ).execute()
@@ -76,7 +75,7 @@ class GoogleSheetsApiHandler:
                 # only set up to return data from one cell
                 for row in values:
                     for cell in row:
-                        message = f"{response_message}: ${cell:,.2f}"
+                        message = f"{response_message}: ${cell:,.2f}" # TODO: leave formatting to Sheets API
                         return message
             
             else:
@@ -84,4 +83,4 @@ class GoogleSheetsApiHandler:
                 return "Invalid message" # TODO: add help message here
         
         else:
-            print("sheets_configuration.json file not loaded properly.")
+            print("sheets_configuration.json file not loaded properly.") # TODO: raise error instead
