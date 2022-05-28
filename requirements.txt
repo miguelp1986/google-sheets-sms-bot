@@ -33,7 +33,7 @@ pure-eval==0.2.2
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 Pygments==2.11.2
-PyJWT==2.3.0
+PyJWT==2.4.0
 pyparsing==3.0.8
 python-dotenv==0.20.0
 pytz==2022.1
