@@ -21,10 +21,11 @@ class GoogleSheetsApiHandler:
     """."""
     def __init__(self) -> None:
         """."""
-        # this will pick up GOOGLE_APPLICATION_CREDENTIALS env var
+        # this will pick up GOOGLE_APPLICATION_CREDENTIALS environment variable
         # https://google-auth.readthedocs.io/en/master/user-guide.html
         credentials, _ = google.auth.default(scopes=SCOPES) 
         try:
+            # create a sheets api service from credentials
             sheets_api_service = build('sheets', 'v4', credentials=credentials)
             self.sheet = sheets_api_service.spreadsheets()
     

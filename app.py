@@ -17,7 +17,7 @@ except Exception as err:
 @app.route("/sms", methods=['GET', 'POST'])
 def sms_reply():
     """Send a dynamic reply to an incoming text message"""
-    # Get the message the user sent our Twilio number
+    # Get the message the user sent to our Twilio number
     if request.values.get("Body") is not None:
         request_message = request.values.get("Body").lower().strip()
         from_number = request.values.get("From")
@@ -29,7 +29,8 @@ def sms_reply():
 
         # If sender is recognized, give appropriate reply
         if from_number in phone_numbers:
-            message = GoogleSheetsApiHandler().get_message(request_message)
+            gsh = GoogleSheetsApiHandler()
+            message = gsh.get_message(request_message)
             # Start our TwiML response
             resp = MessagingResponse()
             resp.message(message)
