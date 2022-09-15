@@ -1,13 +1,13 @@
 # Google Sheets SMS Bot
 
-This project allows you to setup an SMS bot that allows you to get cell data from Google Sheets. It uses Google Authentication, Google Sheets API, and the Twilio Messaging API.
+This project allows you to setup an SMS bot to get information from your Google Sheets. It uses Google Authentication, Google Sheets API, and the Twilio Messaging API.
 
 ## Google API Setup
 
 ### Authentication
 
-- In order to authenticate with your Google API account, a service account is needed. 
-- Follow the steps here to create one: https://cloud.google.com/iam/docs/creating-managing-service-accounts
+- In order to authenticate with your Google API account, a service account is needed.
+  Follow the steps here to create one: https://cloud.google.com/iam/docs/creating-managing-service-accounts
 - Once your service account has been created, create an account key: https://cloud.google.com/iam/docs/creating-managing-service-account-keys#creating
 - Once created, download the json file. You will need to set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to the path of this file.
 
@@ -44,3 +44,4 @@ Example:
 ```
 
 ## Twilio Setup
+- Setup Twilio Account: https://www.twilio.com/docs/sms/quickstart/python
