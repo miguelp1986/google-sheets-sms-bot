@@ -18,7 +18,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 
 class GoogleSheetsApiHandler:
-    """."""
+    """Google Sheets API Handler"""
     def __init__(self) -> None:
         """."""
         # this will pick up GOOGLE_APPLICATION_CREDENTIALS environment variable
