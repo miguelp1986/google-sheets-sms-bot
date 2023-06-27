@@ -29,14 +29,13 @@ Example:
     "spreadsheets": 
     [
         {
-            "spreadsheet_id": "",
-            "spreadsheet_ranges": 
-            [
+            "spreadsheet_id": "abcdefghijklmnopqrstuvwxyz0123456789",
+            "spreadsheet_ranges": [
                 {
-                    "request_message": "",
-                    "response_message": "",
-                    "range": ""
-                },
+                    "request_message": "checking balance",
+                    "response_message": "Current checking balance",
+                    "range": "Sheet1!A1"
+                }
             ]
         }
     ]
@@ -44,4 +43,37 @@ Example:
 ```
 
 ## Twilio Setup
+
 - Setup Twilio Account: https://www.twilio.com/docs/sms/quickstart/python
+
+## Load Environment Variables`
+
+There are several environment variables that you will need to load. Some are Flask specific, Google specific, and Twilio specific. 
+
+Create an `.env` file at the root directory of this repository. This is where you will place your environment variables. This application will load those variables into your environment.
+
+| Variable | Value |
+| -------- | ----- |
+| SCOPES | |
+| GOOGLE_APPLICATION_CREDENTIALS | |
+
+
+
+Example:
+
+```
+FLASK_APP=app
+FLASK_ENV=development
+
+SCOPES=https://www.googleapis.com/auth/spreadsheets
+GOOGLE_APPLICATION_CREDENTIALS=<path to GOOGLE_APPLICATION_CREDENTIALS json file>
+
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+TWILIO_API_KEY=
+TWILIO_PHONE_NUMBER=+11234567890
+PHONE_NUMBERS=+11234567890,+11234567890
+TWILIO_SERVICE_SID=
+TWILIO_CONVERSATION_SID=
+TWILIO_MESSAGING_SERVICE_SID=
+```
