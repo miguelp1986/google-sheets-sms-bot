@@ -1,4 +1,3 @@
-import dotenv
 import google.auth
 import json
 import os
@@ -6,15 +5,7 @@ import os
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-
-# Load .env file
-try:
-    dotenv.load_dotenv()
-except Exception as err:
-    print(err)
-    raise
-
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+SCOPES = os.environ["SCOPES"].split(",")  # build list of Google API Scopes
 
 
 class GoogleSheetsApiHandler:
