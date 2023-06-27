@@ -8,6 +8,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 config.load_env()  # load environment variables from .env file
 app = Flask(__name__)
 
+
 @app.route("/sms", methods=['GET', 'POST'])
 def sms_reply():
     """Send a dynamic reply to an incoming text message"""
@@ -18,7 +19,8 @@ def sms_reply():
         print(f"Incoming message: {request_message}")
         print(f"From phone number: {from_number}")
 
-        phone_numbers = os.environ["PHONE_NUMBERS"].split(",") # build list of phone numbers
+        # Get phone numbers from environment variables
+        phone_numbers = os.environ["PHONE_NUMBERS"].split(",")
 
         # If sender is recognized, give appropriate reply
         if from_number in phone_numbers:
@@ -28,9 +30,9 @@ def sms_reply():
             resp = MessagingResponse()
             resp.message(message)
             return str(resp)
-        
+
         return
-        
+
     else:
         return "<p>No data, chief.</p>"
 
