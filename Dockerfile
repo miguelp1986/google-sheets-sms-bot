@@ -1,6 +1,10 @@
 # Base image
 FROM ubuntu:latest
 
+# Set environment variables
+ARG FLASK_PORT
+ENV PORT=$FLASK_PORT
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     python3 \
@@ -17,7 +21,7 @@ COPY . /app
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Expose the Flask application port
-EXPOSE 5001
+EXPOSE $PORT
 
 # Start the Flask application
 CMD ["python3", "app.py"]

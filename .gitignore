@@ -221,3 +221,6 @@ service_account.json
 
 # NGINX
 nginx.conf
+
+# Configuration files
+config_files/
