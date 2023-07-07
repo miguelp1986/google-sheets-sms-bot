@@ -11,8 +11,15 @@ from utils import validate_phone_numbers
 config.load_env()  # load environment variables from .env file
 
 # Get Flask host and port from environment variables
-FLASK_HOST = os.environ["FLASK_HOST"]
-FLASK_PORT = os.environ["FLASK_PORT"]
+FLASK_HOST = os.getenv("FLASK_HOST")
+if FLASK_HOST is None:
+    print("No FLASK_HOST environment variable found.")
+    exit(1)
+
+FLASK_PORT = os.getenv("FLASK_PORT")
+if FLASK_PORT is None:
+    print("No FLASK_PORT environment variable found.")
+    exit(1)
 
 # Get list of phone numbers from environment variable
 PHONE_NUMBERS = os.getenv("PHONE_NUMBERS")

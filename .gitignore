@@ -215,10 +215,6 @@ pip-selfcheck.json
 .history
 .ionide
 
-# Google Workspace API
-sheets_configuration.json
-service_account.json
-
 # NGINX
 nginx.conf
 
