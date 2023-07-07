@@ -215,8 +215,5 @@ pip-selfcheck.json
 .history
 .ionide
 
-# NGINX
-nginx.conf
-
 # Configuration files
 config_files/

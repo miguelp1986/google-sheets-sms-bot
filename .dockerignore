@@ -9,6 +9,3 @@ venv.bak/
 
 # Configuration files
 config_files/
-
-# NGINX
-nginx.conf

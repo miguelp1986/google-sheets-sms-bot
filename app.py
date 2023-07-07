@@ -8,7 +8,8 @@ from sheets_handler import GoogleSheetsApiHandler
 from twilio.twiml.messaging_response import MessagingResponse
 from utils import validate_phone_numbers
 
-config.load_env()  # load environment variables from .env file
+# load environment variables from .env file
+config.load_env()
 
 # Get Flask host and port from environment variables
 FLASK_HOST = os.getenv("FLASK_HOST")
