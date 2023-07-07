@@ -1,3 +1,5 @@
+"""Google Sheets API Handler"""
+
 import google.auth
 import json
 import os
@@ -5,7 +7,19 @@ import os
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-SCOPES = os.environ["SCOPES"].split(",")  # build list of Google API Scopes
+# Get Google API Scopes from environment variable
+SCOPES = os.getenv("SCOPES")
+if SCOPES is not None:
+    SCOPES = SCOPES.split(",")
+else:
+    print("Invalid Google API Scopes in environment variable SCOPES.")
+    exit(1)
+
+# Get Google Sheets Configuration file from environment variable
+SHEETS_CONFIG_FILE = os.getenv("SHEETS_CONFIG_FILE")
+if SHEETS_CONFIG_FILE is None:
+    print("Google Sheets Configuration file not specified in environment")
+    exit(1)
 
 
 class GoogleSheetsApiHandler:
@@ -30,7 +44,9 @@ class GoogleSheetsApiHandler:
             with open(sheets_config_file, "r") as sheets_config:
                 return json.load(sheets_config)
 
-        return {}  # TODO: raise error instead
+        else:
+            print("Google Sheets Configuration file not found.")
+            exit(1)
 
     def _get_sheet_data(self, sheets_config_data: dict,
                         request_message: str) -> tuple:
@@ -44,12 +60,13 @@ class GoogleSheetsApiHandler:
                         if sheet_range["request_message"] == request_message:
                             return spreadsheet["spreadsheet_id"], sheet_range
 
-        return (None, None)  # TODO raise error instead
+        else:
+            print("No spreadsheets in Google Sheets Configuration file.")
+            exit(1)
 
     def get_message(self, request_message: str) -> str:
         """Return message from Google Sheets"""
-        sheets_config_data = self._load_sheets_config(
-            "sheets_configuration.json")
+        sheets_config_data = self._load_sheets_config(SHEETS_CONFIG_FILE)
         if bool(sheets_config_data):
             spreadsheet_id, sheet_range_dict = (
                 self._get_sheet_data(sheets_config_data, request_message))
@@ -78,5 +95,5 @@ class GoogleSheetsApiHandler:
                 return "Invalid message"  # TODO add help message here
 
         else:
-            # TODO raise error instead
             print("sheets_configuration.json file not loaded properly.")
+            exit(1)
