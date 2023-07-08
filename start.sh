@@ -26,7 +26,7 @@ if [ ! -f "$FULL_DOCKER_COMPOSE_PATH" ]; then
   exit 1
 fi
 
-# Check if the specific containers are running
+# Check if the specific containers are running. If so, tear them down.
 if docker-compose -f "$FULL_DOCKER_COMPOSE_PATH" ps -q; then
   echo "Existing containers found. Tearing them down..."
   docker-compose -f "$FULL_DOCKER_COMPOSE_PATH" down

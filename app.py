@@ -38,11 +38,17 @@ app = Flask(__name__)
 def sms_reply():
     """Send a dynamic reply to an incoming text message"""
     # Get the message the user sent to our Twilio number
-    if request.values.get("Body") is not None:
-        request_message = request.values.get("Body").lower().strip()
+    request_body = request.values.get("Body")
+    if request_body is not None:
+        request_message = request_body.lower().strip()
         from_number = request.values.get("From")
-        print(f"Incoming message: {request_message}")
-        print(f"From phone number: {from_number}")
+        if from_number is not None:
+            print(f"Incoming message: {request_message}")
+            print(f"From phone number: {from_number}")
+
+        else:
+            print("No sender phone number.")
+            exit(1)
 
         # If sender is recognized, give appropriate reply
         if from_number in PHONE_NUMBERS:
