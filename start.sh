@@ -5,9 +5,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Define the path to your .env file and Docker compose file relative to the script directory
 ENV_FILE=".env"
-DOCKER_COMPOSE_FILE="docker-compose-file.yml"
+DOCKER_COMPOSE_FILE="docker-compose.yml"
 
-# Construct the full path to the Docker Compose file
+# Construct the full path to .env and Docker compose file
 FULL_ENV_PATH="$SCRIPT_DIR/$ENV_FILE"
 FULL_DOCKER_COMPOSE_PATH="$SCRIPT_DIR/$DOCKER_COMPOSE_FILE"
 
