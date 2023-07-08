@@ -47,10 +47,7 @@ Example:
                     "range": "Sheet range value"
                 }
             ]
-        },
-        .
-        .
-        .
+        }
     ]
 }
 ```
