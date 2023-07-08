@@ -1,0 +1,14 @@
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Configuration files
+config_files/
+
+# Update SMS Webhook
+update_sms_webhook.sh 
