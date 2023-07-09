@@ -33,4 +33,4 @@ if docker-compose -f "$FULL_DOCKER_COMPOSE_PATH" ps -q; then
 fi
 
 # Run docker-compose up
-docker-compose -f "$FULL_DOCKER_COMPOSE_PATH" up
+docker-compose -f "$FULL_DOCKER_COMPOSE_PATH" up --build
