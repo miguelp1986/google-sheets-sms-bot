@@ -59,6 +59,9 @@ class GoogleSheetsApiHandler:
                     for sheet_range in spreadsheet["sheet_ranges"]:
                         if sheet_range["request_message"] == request_message:
                             return spreadsheet["spreadsheet_id"], sheet_range
+                    
+                    print("No matching request message found")
+                    return None, None
 
         else:
             print("No spreadsheets in Google Sheets Configuration file.")
@@ -67,10 +70,10 @@ class GoogleSheetsApiHandler:
     def get_message(self, request_message: str) -> str:
         """Return message from Google Sheets"""
         sheets_config_data = self._load_sheets_config(SHEETS_CONFIG_FILE)
-        if bool(sheets_config_data):
+        if sheets_config_data is not None:
             spreadsheet_id, sheet_range_dict = (
                 self._get_sheet_data(sheets_config_data, request_message))
-            if bool(sheet_range_dict):
+            if sheet_range_dict is not None:
                 response_message = sheet_range_dict["response_message"]
                 result = self.sheet.values().get(
                     spreadsheetId=spreadsheet_id,
