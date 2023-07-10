@@ -8,7 +8,7 @@ services:
       args:
         - FLASK_PORT
     ports:
-      - "${FLASK_PORT}:${FLASK_PORT}"
+      - "${ FLASK_PORT }:${ FLASK_PORT }"
     env_file:
       - .env
     volumes:
@@ -19,9 +19,9 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf.template:ro
     ports:
-      - "${NGINX_HOST_PORT}:${NGINX_CONTAINER_PORT}"
+      - "${ NGINX_HOST_PORT} :${ NGINX_CONTAINER_PORT }"
     environment:
-      - FLASK_PORT=${FLASK_PORT}
-      - NGINX_HOST_PORT=${NGINX_HOST_PORT}
+      - FLASK_PORT=${ FLASK_PORT }
+      - NGINX_HOST_PORT=${ NGINX_HOST_PORT }
     depends_on:
       - flask
